@@ -24,6 +24,8 @@ if (!"R.utils" %in% installed.packages()) install.packages("R.utils")
 
 # load needed libraries
 library(R.utils)
+library(dplyr)
+library(ggplot2)
 ```
 
 ```{r}
@@ -34,10 +36,22 @@ if(!file.exists("data/Stormdata.csv")) {
     bunzip2("data/Stormdata.csv.bz2",destname="data/Stormdata.csv",overwrite=TRUE)
 }
 
-# Load data
+# Load data and transform to data.table
 if(!exists("Stormdata"))
     Stormdata <- read.csv("data/Stormdata.csv", header=TRUE, row.names=NULL, 
                     stringsAsFactors=FALSE, na.strings = "NA")
+
+# Clean exponents
+exponent <- function(x) { switch(toupper(x), "K" = 10E3, "M" = 10E6, "B" = 10E9 , 1)}
+Stormdata$PROPDMGEXP <- sapply(Stormdata$PROPDMGEXP, FUN="exponent")
+Stormdata$CROPDMGEXP <- sapply(Stormdata$CROPDMGEXP, FUN="exponent")
+mutate(Stormdata,PROPDMG = PROPDMG * PROPDMGEXP,CROPDMG = CROPDMG * CROPDMGEXP)
+
+# Clean dataset by subsetting columns & grouping by EVTYPE
+Stormdata <- select(Stormdata, EVTYPE, FATALITIES, INJURIES, PROPDMG, CROPDMG)
+
+
+
 ```
 
 ## Results
