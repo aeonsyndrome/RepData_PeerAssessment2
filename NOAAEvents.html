@@ -79,11 +79,14 @@ img {
 <div id="data-acquisition-processing" class="section level2">
 <h2>Data Acquisition &amp; Processing</h2>
 <p>In this first step, we download and install all needed libraries (messages off to save space) as well as preparing the data for processing (download &amp; uncompress).</p>
+<p>Once the data is loaded, we process the data by cleaning the exponents encoding (from a seperate char column to the correct values), and group the values by type of event. The clean data is now ready for analysis and results.</p>
 <pre class="r"><code># install required R.utils package to uncompress .bz2 file
 if (!&quot;R.utils&quot; %in% installed.packages()) install.packages(&quot;R.utils&quot;)
 
 # load needed libraries
-library(R.utils)</code></pre>
+library(R.utils)
+library(dplyr)
+library(ggplot2)</code></pre>
 <pre class="r"><code># Download and unzip data
 url &lt;- &quot;https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2&quot;
 if(!file.exists(&quot;data/Stormdata.csv&quot;)) {
@@ -91,10 +94,18 @@ if(!file.exists(&quot;data/Stormdata.csv&quot;)) {
     bunzip2(&quot;data/Stormdata.csv.bz2&quot;,destname=&quot;data/Stormdata.csv&quot;,overwrite=TRUE)
 }
 
-# Load data
+# Load data and transform to data.table
 if(!exists(&quot;Stormdata&quot;))
     Stormdata &lt;- read.csv(&quot;data/Stormdata.csv&quot;, header=TRUE, row.names=NULL, 
-                    stringsAsFactors=FALSE, na.strings = &quot;NA&quot;)</code></pre>
+                    stringsAsFactors=FALSE, na.strings = &quot;NA&quot;)
+
+# Clean dataset by subsetting columns
+Stormdata &lt;- select(Stormdata, EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP, CROPDMG, CROPDMGEXP)
+
+# Clean exponents
+exponent &lt;- function(x) { switch(toupper(x), &quot;K&quot; = 10E3, &quot;M&quot; = 10E6, &quot;B&quot; = 10E9 , 1)}
+Stormdata$PROPDMGEXP &lt;- sapply(Stormdata$PROPDMGEXP, FUN=&quot;exponent&quot;)
+Stormdata$CROPDMGEXP &lt;- sapply(Stormdata$CROPDMGEXP, FUN=&quot;exponent&quot;)</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>

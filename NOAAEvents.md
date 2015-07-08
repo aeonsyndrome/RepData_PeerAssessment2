@@ -1,11 +1,6 @@
----
-title: 'Health and Economic Impact of Storm Events in the US'
-author: "Leon Duplay"
-date: "8 July 2015"
-output:
-  html_document:
-    keep_md: true
----
+# Health and Economic Impact of Storm Events in the US
+Leon Duplay  
+8 July 2015  
 
 ## Synopsis
 
@@ -22,7 +17,8 @@ In this first step, we download and install all needed libraries (messages off t
 
 Once the data is loaded, we process the data by cleaning the exponents encoding (from a seperate char column to the correct values), and group the values by type of event. The clean data is now ready for analysis and results.
 
-```{r, message = FALSE, warning = FALSE}
+
+```r
 # install required R.utils package to uncompress .bz2 file
 if (!"R.utils" %in% installed.packages()) install.packages("R.utils")
 
@@ -32,7 +28,8 @@ library(dplyr)
 library(ggplot2)
 ```
 
-```{r}
+
+```r
 # Download and unzip data
 url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
 if(!file.exists("data/Stormdata.csv")) {
@@ -52,11 +49,6 @@ Stormdata <- select(Stormdata, EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP
 exponent <- function(x) { switch(toupper(x), "K" = 10E3, "M" = 10E6, "B" = 10E9 , 1)}
 Stormdata$PROPDMGEXP <- sapply(Stormdata$PROPDMGEXP, FUN="exponent")
 Stormdata$CROPDMGEXP <- sapply(Stormdata$CROPDMGEXP, FUN="exponent")
-mutate(Stormdata,PROPDMG = PROPDMG * PROPDMGEXP,CROPDMG = CROPDMG * CROPDMGEXP)
-Stormdata <- select(Stormdata, -PROPDMGEXP, -CROPDMGEXP)
-
-# Finish data processing by grouping by EVTYPE
-Stormdata <- Stormdata %>% group_by(EVTYPE) %>% summarise_each(funs(sum))
 ```
 
 ## Results
