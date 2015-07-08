@@ -103,13 +103,17 @@ healthevents <- rbind_list(fatalities_sum,fatalities_mean,injuries_sum,injuries_
 ```
 
 ```{r, fig.height = 4, fig.width=10}
-g1 <- ggplot(data=fatalities_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + geom_bar(stat="identity") +
+g1 <- ggplot(data=fatalities_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
+        geom_bar(stat="identity") + 
         coord_flip() + labs(title="Total Fatalities by Event") + xlab("") + ylab("")
-g2 <- ggplot(data=fatalities_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + geom_bar(stat="identity") +
+g2 <- ggplot(data=fatalities_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
+        geom_bar(stat="identity") +
         coord_flip() + labs(title="Avg Fatalities by Event") + xlab("") + ylab("")
-g3 <- ggplot(data=injuries_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + geom_bar(stat="identity") +
+g3 <- ggplot(data=injuries_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
+        geom_bar(stat="identity") +
         coord_flip() + labs(title="Total Injuries by Event") + xlab("") + ylab("")
-g4 <- ggplot(data=injuries_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + geom_bar(stat="identity") +
+g4 <- ggplot(data=injuries_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
+        geom_bar(stat="identity") +
         coord_flip() + labs(title="Avg Injuries by Event") + xlab("") + ylab("")
 grid.arrange(g1, g2, g3,g4,ncol=2,nrow=2)
 
