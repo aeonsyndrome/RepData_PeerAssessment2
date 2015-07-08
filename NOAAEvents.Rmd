@@ -61,3 +61,46 @@ Stormdata <- Stormdata %>% group_by(EVTYPE) %>% summarise_each(funs(sum,mean))
 ```
 
 ## Results
+
+Now we have processed and cleaned the data, we can perform the analysis needed to understand which types of events are most harmful economically and to people's health.
+
+### Weather event impact on health
+
+We start by calculating the top 15 for each bucket, then plut using ggplot2!
+
+```{r}
+# For each measure, calculate top 15
+fatalities_sum <- Stormdata %>% 
+    select(EVTYPE,FATALITIES_sum) %>% 
+    arrange(desc(FATALITIES_sum)) %>% 
+    rename(FATALITIES_sum = Measure) %>%
+    top_n(15)
+fatalities_sum$measure <- "Total"
+fatalities_sum$type <- "Fatalities"
+fatalities_mean <- Stormdata %>% 
+    select(EVTYPE,FATALITIES_mean) %>% 
+    arrange(desc(FATALITIES_mean)) %>% 
+    rename(FATALITIES_mean = Measure) %>%
+    top_n(15)
+fatalities_mean$measure <- "Average"
+fatalities_mean$type <- "Fatalities"
+injuries_sum <- Stormdata %>% 
+    select(EVTYPE,INJURIES_sum) %>% 
+    arrange(desc(INJURIES_sum)) %>% 
+    rename(INJURIES_sum = Measure) %>%
+    top_n(15)
+injuries_sum$measure <- "Total"
+injuries_sum$type <- "Injuries"
+injuries_mean <- Stormdata %>% 
+    select(EVTYPE,INJURIES_mean) %>% 
+    arrange(desc(INJURIES_mean)) %>%
+    rename(INJURIES_mean = Measure) %>%
+    top_n(15)
+injuries_mean$measure <- "Average"
+injuries_mean$type <- "Injuries"
+healthevents <- rbind_list(fatalities_sum,fatalities_mean,injuries_sum,injuries_mean)
+```
+
+```{r, fig.height = 4}
+t <- ggplot(mpg, aes(cty, hwy)) + geom_point()
+```
