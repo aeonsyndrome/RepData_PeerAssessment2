@@ -75,52 +75,34 @@ We start by calculating the top 10 for each bucket, then plot using ggplot2!
 
 ```{r}
 # For each measure, calculate top 10
-fatalities_sum <- Stormdata %>% 
-    select(EVTYPE,FATALITIES_sum) %>% 
-    arrange(desc(FATALITIES_sum)) %>% 
-    rename(Measure = FATALITIES_sum) %>%
-    top_n(10,Measure)
-fatalities_sum$measure <- "Total"
-fatalities_sum$type <- "Fatalities"
-fatalities_mean <- Stormdata %>% 
-    select(EVTYPE,FATALITIES_mean) %>% 
-    arrange(desc(FATALITIES_mean)) %>% 
-    rename(Measure = FATALITIES_mean) %>%
-    top_n(10,Measure)
-fatalities_mean$measure <- "Average"
-fatalities_mean$type <- "Fatalities"
-injuries_sum <- Stormdata %>% 
-    select(EVTYPE,INJURIES_sum) %>% 
-    arrange(desc(INJURIES_sum)) %>% 
-    rename(Measure = INJURIES_sum) %>%
-    top_n(10,Measure)
-injuries_sum$measure <- "Total"
-injuries_sum$type <- "Injuries"
-injuries_mean <- Stormdata %>% 
-    select(EVTYPE,INJURIES_mean) %>% 
-    arrange(desc(INJURIES_mean)) %>%
-    rename(Measure = INJURIES_mean) %>%
-    top_n(10,Measure)
-injuries_mean$measure <- "Average"
-injuries_mean$type <- "Injuries"
-healthevents <- rbind_list(fatalities_sum,fatalities_mean,injuries_sum,injuries_mean)
+fatalities_sum <- Stormdata %>% select(EVTYPE,FATALITIES_sum) %>% 
+    arrange(desc(FATALITIES_sum)) %>% rename(Measure = FATALITIES_sum) %>%top_n(10,Measure)
+fatalities_mean <- Stormdata %>% select(EVTYPE,FATALITIES_mean) %>% 
+    arrange(desc(FATALITIES_mean)) %>% rename(Measure = FATALITIES_mean) %>% top_n(10,Measure)
+injuries_sum <- Stormdata %>% select(EVTYPE,INJURIES_sum) %>% 
+    arrange(desc(INJURIES_sum)) %>% rename(Measure = INJURIES_sum) %>% top_n(10,Measure)
+injuries_mean <- Stormdata %>% select(EVTYPE,INJURIES_mean) %>%
+    arrange(desc(INJURIES_mean)) %>% rename(Measure = INJURIES_mean) %>% top_n(10,Measure)
 ```
 
-```{r, fig.height = 6, fig.width=10}
-g1 <- ggplot(data=fatalities_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
-        geom_bar(stat="identity") + 
-        coord_flip() + labs(title="Total Fatalities by Event") + xlab("") + ylab("")
-g2 <- ggplot(data=fatalities_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
-        geom_bar(stat="identity") +
-        coord_flip() + labs(title="Avg Fatalities by Event") + xlab("") + ylab("")
-g3 <- ggplot(data=injuries_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
-        geom_bar(stat="identity") +
-        coord_flip() + labs(title="Total Injuries by Event") + xlab("") + ylab("")
-g4 <- ggplot(data=injuries_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
-        geom_bar(stat="identity") +
-        coord_flip() + labs(title="Avg Injuries by Event") + xlab("") + ylab("")
+```{r, fig.height = 5, fig.width=10}
+# Multiplot using ggplot2 and gridExtra
+noaaplot <- function(datain,titlein) {
+    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
+        geom_bar(stat="identity") + coord_flip() + 
+        labs(title=titlein) + xlab("") + ylab("")
+}
+g1 <- noaaplot(fatalities_sum,"Total Fatalities by Event")
+g2 <- noaaplot(fatalities_mean,"Avg Fatalities by Event")
+g3 <- noaaplot(injuries_sum,"Total Injuries by Event")
+g4 <- noaaplot(injuries_mean,"Avg Injuries by Event")
 grid.arrange(g1, g2, g3,g4,ncol=2,nrow=2)
-
 ```
 
-Results show that Tornadoes dominate the sources of weather-related fatalities & injuries in the US, followed by excessive heat and floods. On average, however
+Results show that Tornadoes dominate the sources of weather-related fatalities & injuries in the US, followed by excessive heat and floods. On average, however, specific smaller events have the largest death & injury toll (cold & snow, tropical storm gordon, high wind/seas). 
+
+This data therefore helps assess the risk of different events in regards to human fatalities and injuries, in particular the fact that some rarer events should not be discounted.
+
+### Weather impact on economy
+
+We start by calculating the top 10 for each bucket, then plot using ggplot2!
