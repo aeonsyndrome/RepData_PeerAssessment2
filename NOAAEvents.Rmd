@@ -28,7 +28,7 @@ In this first step, we download and install all needed libraries (messages off t
 
 Once the data is loaded, we process the data by cleaning the exponents encoding (from a seperate char column to the correct values), and group the values by type of event. The clean data is now ready for analysis and results.
 
-```{r, message = FALSE, warning = FALSE}
+```{r libraries, message = FALSE, warning = FALSE}
 # install required R.utils package to uncompress .bz2 file
 if (!"R.utils" %in% installed.packages()) install.packages("R.utils")
 
@@ -39,7 +39,7 @@ library(ggplot2)
 library(gridExtra)
 ```
 
-```{r, cache = TRUE}
+```{r processing, cache = TRUE}
 # Download and unzip data
 url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
 if(!file.exists("data/Stormdata.csv")) {
@@ -73,7 +73,7 @@ Now we have processed and cleaned the data, we can perform the analysis needed t
 
 We start by calculating the top 10 for each bucket, then plot using ggplot2!
 
-```{r}
+```{r healthtop10}
 # For each measure, calculate top 10
 fatalities_sum <- Stormdata %>% select(EVTYPE,FATALITIES_sum) %>% 
     arrange(desc(FATALITIES_sum)) %>% rename(Measure = FATALITIES_sum) %>%top_n(10,Measure)
@@ -85,7 +85,7 @@ injuries_mean <- Stormdata %>% select(EVTYPE,INJURIES_mean) %>%
     arrange(desc(INJURIES_mean)) %>% rename(Measure = INJURIES_mean) %>% top_n(10,Measure)
 ```
 
-```{r, fig.height = 5, fig.width=10}
+```{r healthplot, fig.height = 5, fig.width=10}
 # Multiplot using ggplot2 and gridExtra
 noaaplot <- function(datain,titlein) {
     ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
@@ -106,3 +106,29 @@ This data therefore helps assess the risk of different events in regards to huma
 ### Weather impact on economy
 
 We start by calculating the top 10 for each bucket, then plot using ggplot2!
+
+```{r ecotop10}
+# For each measure, calculate top 10
+propdmg_sum <- Stormdata %>% select(EVTYPE,PROPDMG_sum) %>% 
+    arrange(desc(PROPDMG_sum)) %>% rename(Measure = PROPDMG_sum) %>% top_n(10,Measure)
+propdmg_mean <- Stormdata %>% select(EVTYPE,PROPDMG_mean) %>% 
+    arrange(desc(PROPDMG_mean)) %>% rename(Measure = PROPDMG_mean) %>% top_n(10,Measure)
+cropdmg_sum <- Stormdata %>% select(EVTYPE,CROPDMG_sum) %>% 
+    arrange(desc(CROPDMG_sum)) %>% rename(Measure = CROPDMG_sum) %>% top_n(10,Measure)
+cropdmg_mean <- Stormdata %>% select(EVTYPE,CROPDMG_mean) %>%
+    arrange(desc(CROPDMG_mean)) %>% rename(Measure = CROPDMG_mean) %>% top_n(10,Measure)
+```
+
+```{r ecoplot, fig.height = 5, fig.width=10}
+# Multiplot using ggplot2 and gridExtra
+noaaplot <- function(datain,titlein) {
+    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
+        geom_bar(stat="identity") + coord_flip() + 
+        labs(title=titlein) + xlab("") + ylab("")
+}
+g5 <- noaaplot(propdmg_sum,"Total Property Dmg by Event ($)")
+g6 <- noaaplot(propdmg_mean,"Avg Property Dmg by Event ($)")
+g7 <- noaaplot(cropdmg_sum,"Total Crop Dmg by Event ($)")
+g8 <- noaaplot(cropdmg_mean,"Avg Crop Dmg by Event ($)")
+grid.arrange(g5, g6, g7,g8,ncol=2,nrow=2)
+```

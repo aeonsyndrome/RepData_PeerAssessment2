@@ -92,7 +92,7 @@ g4 <- noaaplot(injuries_mean,"Avg Injuries by Event")
 grid.arrange(g1, g2, g3,g4,ncol=2,nrow=2)
 ```
 
-![](NOAAEvents_files/figure-html/unnamed-chunk-4-1.png) 
+![](NOAAEvents_files/figure-html/healthplot-1.png) 
 
 Results show that Tornadoes dominate the sources of weather-related fatalities & injuries in the US, followed by excessive heat and floods. On average, however, specific smaller events have the largest death & injury toll (cold & snow, tropical storm gordon, high wind/seas). 
 
@@ -101,3 +101,33 @@ This data therefore helps assess the risk of different events in regards to huma
 ### Weather impact on economy
 
 We start by calculating the top 10 for each bucket, then plot using ggplot2!
+
+
+```r
+# For each measure, calculate top 10
+propdmg_sum <- Stormdata %>% select(EVTYPE,PROPDMG_sum) %>% 
+    arrange(desc(PROPDMG_sum)) %>% rename(Measure = PROPDMG_sum) %>% top_n(10,Measure)
+propdmg_mean <- Stormdata %>% select(EVTYPE,PROPDMG_mean) %>% 
+    arrange(desc(PROPDMG_mean)) %>% rename(Measure = PROPDMG_mean) %>% top_n(10,Measure)
+cropdmg_sum <- Stormdata %>% select(EVTYPE,CROPDMG_sum) %>% 
+    arrange(desc(CROPDMG_sum)) %>% rename(Measure = CROPDMG_sum) %>% top_n(10,Measure)
+cropdmg_mean <- Stormdata %>% select(EVTYPE,CROPDMG_mean) %>%
+    arrange(desc(CROPDMG_mean)) %>% rename(Measure = CROPDMG_mean) %>% top_n(10,Measure)
+```
+
+
+```r
+# Multiplot using ggplot2 and gridExtra
+noaaplot <- function(datain,titlein) {
+    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
+        geom_bar(stat="identity") + coord_flip() + 
+        labs(title=titlein) + xlab("") + ylab("")
+}
+g5 <- noaaplot(propdmg_sum,"Total Property Dmg by Event ($)")
+g6 <- noaaplot(propdmg_mean,"Avg Property Dmg by Event ($)")
+g7 <- noaaplot(cropdmg_sum,"Total Crop Dmg by Event ($)")
+g8 <- noaaplot(cropdmg_mean,"Avg Crop Dmg by Event ($)")
+grid.arrange(g5, g6, g7,g8,ncol=2,nrow=2)
+```
+
+![](NOAAEvents_files/figure-html/ecoplot-1.png) 
