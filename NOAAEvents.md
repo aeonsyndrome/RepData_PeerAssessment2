@@ -81,9 +81,9 @@ injuries_mean <- Stormdata %>% select(EVTYPE,INJURIES_mean) %>%
 ```r
 # Multiplot using ggplot2 and gridExtra
 noaaplot <- function(datain,titlein) {
-    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
-        geom_bar(stat="identity") + coord_flip() + 
-        labs(title=titlein) + xlab("") + ylab("")
+    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure, fill=Measure)) +
+        geom_bar(stat="identity") + coord_flip() + theme_bw() +
+        labs(title=titlein,x="",y="") + scale_fill_gradient(low = "yellow", high = "red")
 }
 g1 <- noaaplot(fatalities_sum,"Total Fatalities by Event")
 g2 <- noaaplot(fatalities_mean,"Avg Fatalities by Event")
@@ -118,11 +118,6 @@ cropdmg_mean <- Stormdata %>% select(EVTYPE,CROPDMG_mean) %>%
 
 ```r
 # Multiplot using ggplot2 and gridExtra
-noaaplot <- function(datain,titlein) {
-    ggplot(data=datain, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
-        geom_bar(stat="identity") + coord_flip() + 
-        labs(title=titlein) + xlab("") + ylab("")
-}
 g5 <- noaaplot(propdmg_sum,"Total Property Dmg by Event ($)")
 g6 <- noaaplot(propdmg_mean,"Avg Property Dmg by Event ($)")
 g7 <- noaaplot(cropdmg_sum,"Total Crop Dmg by Event ($)")
@@ -131,3 +126,5 @@ grid.arrange(g5, g6, g7,g8,ncol=2,nrow=2)
 ```
 
 ![](NOAAEvents_files/figure-html/ecoplot-1.png) 
+
+Results show that 
