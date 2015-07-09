@@ -143,16 +143,16 @@ sessionInfo()
 ```
 
 ```
-## R version 3.1.3 (2015-03-09)
+## R version 3.2.1 (2015-06-18)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 7 x64 (build 7601) Service Pack 1
+## Running under: Windows 8 x64 (build 9200)
 ## 
 ## locale:
-## [1] LC_COLLATE=English_United Kingdom.1252 
-## [2] LC_CTYPE=English_United Kingdom.1252   
-## [3] LC_MONETARY=English_United Kingdom.1252
-## [4] LC_NUMERIC=C                           
-## [5] LC_TIME=English_United Kingdom.1252    
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
 ## 
 ## attached base packages:
 ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
@@ -163,11 +163,11 @@ sessionInfo()
 ## [5] R.oo_1.19.0       R.methodsS3_1.7.0
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] assertthat_0.1   colorspace_1.2-6 DBI_0.3.1        digest_0.6.8    
-##  [5] evaluate_0.7     formatR_1.2      gtable_0.1.2     htmltools_0.2.6 
-##  [9] knitr_1.10.5     labeling_0.3     lazyeval_0.1.10  magrittr_1.5    
-## [13] MASS_7.3-42      munsell_0.4.2    parallel_3.1.3   plyr_1.8.3      
-## [17] proto_0.3-10     R6_2.1.0         Rcpp_0.11.6      reshape2_1.4.1  
-## [21] rmarkdown_0.7    scales_0.2.5     stringi_0.5-5    stringr_1.0.0   
-## [25] tools_3.1.3      yaml_2.1.13
+##  [1] Rcpp_0.11.6      knitr_1.10.5     magrittr_1.5     MASS_7.3-40     
+##  [5] munsell_0.4.2    colorspace_1.2-6 R6_2.1.0         stringr_1.0.0   
+##  [9] plyr_1.8.3       tools_3.2.1      parallel_3.2.1   gtable_0.1.2    
+## [13] DBI_0.3.1        htmltools_0.2.6  lazyeval_0.1.10  assertthat_0.1  
+## [17] yaml_2.1.13      digest_0.6.8     reshape2_1.4.1   formatR_1.2     
+## [21] evaluate_0.7     rmarkdown_0.7    labeling_0.3     stringi_0.5-5   
+## [25] scales_0.2.5     proto_0.3-10
 ```
