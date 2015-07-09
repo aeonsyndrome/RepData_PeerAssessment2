@@ -4,7 +4,12 @@ author: "Leon Duplay"
 date: "8 July 2015"
 output:
   html_document:
+    fig_width: 9
     keep_md: yes
+    pandoc_args: [
+      "+RTS", "-K64m",
+      "-RTS"
+    ]
   pdf_document: default
 ---
 
@@ -38,13 +43,12 @@ library(gridExtra)
 # Download and unzip data
 url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
 if(!file.exists("data/Stormdata.csv")) {
-    download.file(url,destfile ="data/Stormdata.csv.bz2",method="internal")
+    download.file(url,destfile ="data/Stormdata.csv.bz2",method="curl")
     bunzip2("data/Stormdata.csv.bz2",destname="data/Stormdata.csv",overwrite=TRUE)
 }
 
 # Load data and transform to data.table
-if(!exists("Stormdata"))
-    Stormdata <- read.csv("data/Stormdata.csv", header=TRUE, row.names=NULL, 
+Stormdata <- read.csv("data/Stormdata.csv", header=TRUE, row.names=NULL, 
                     stringsAsFactors=FALSE, na.strings = "NA")
 
 # Clean dataset by subsetting columns
@@ -54,7 +58,7 @@ Stormdata <- select(Stormdata, EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP
 exponent <- function(x) { switch(toupper(x), "K" = 10E3, "M" = 10E6, "B" = 10E9 , 1)}
 Stormdata$PROPDMGEXP <- sapply(Stormdata$PROPDMGEXP, FUN="exponent")
 Stormdata$CROPDMGEXP <- sapply(Stormdata$CROPDMGEXP, FUN="exponent")
-mutate(Stormdata,PROPDMG = PROPDMG * PROPDMGEXP,CROPDMG = CROPDMG * CROPDMGEXP)
+Stormdata <- mutate(Stormdata,PROPDMG = PROPDMG * PROPDMGEXP,CROPDMG = CROPDMG * CROPDMGEXP)
 Stormdata <- select(Stormdata, -PROPDMGEXP, -CROPDMGEXP)
 
 # Finish data processing by grouping by EVTYPE
@@ -67,7 +71,7 @@ Now we have processed and cleaned the data, we can perform the analysis needed t
 
 ### Weather event impact on health
 
-We start by calculating the top 10 for each bucket, then plut using ggplot2!
+We start by calculating the top 10 for each bucket, then plot using ggplot2!
 
 ```{r}
 # For each measure, calculate top 10
@@ -102,7 +106,7 @@ injuries_mean$type <- "Injuries"
 healthevents <- rbind_list(fatalities_sum,fatalities_mean,injuries_sum,injuries_mean)
 ```
 
-```{r, fig.height = 4, fig.width=10}
+```{r, fig.height = 6, fig.width=10}
 g1 <- ggplot(data=fatalities_sum, aes(x=reorder(EVTYPE,Measure), y=Measure)) + 
         geom_bar(stat="identity") + 
         coord_flip() + labs(title="Total Fatalities by Event") + xlab("") + ylab("")
@@ -118,3 +122,5 @@ g4 <- ggplot(data=injuries_mean, aes(x=reorder(EVTYPE,Measure), y=Measure)) +
 grid.arrange(g1, g2, g3,g4,ncol=2,nrow=2)
 
 ```
+
+Results show that Tornadoes dominate the sources of weather-related fatalities & injuries in the US, followed by excessive heat and floods. On average, however
