@@ -128,4 +128,8 @@ g8 <- noaaplot(cropdmg_mean,"Avg Crop Dmg by Event ($)")
 grid.arrange(g5, g6, g7,g8,ncol=2,nrow=2)
 ```
 
-Results show that 
+Results show that Floods, Hurricanes & Tornadoes are the top 3 weather events causing property damage, in the billions of dollars. On average though, heavy rain can also deal a lot of economic damage in addition.
+
+The risk for crops is different: Drought dominates the economic damage impact, although floods, and excessive wetness, also cause a lot of damage.
+
+These results are interesting as we can assume they are weighted by the sample population, since humans and crops are concentrated in different areas of the US.
