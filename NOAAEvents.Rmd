@@ -132,4 +132,12 @@ Results show that Floods, Hurricanes & Tornadoes are the top 3 weather events ca
 
 The risk for crops is different: Drought dominates the economic damage impact, although floods, and excessive wetness, also cause a lot of damage.
 
-These results are interesting as we can assume they are weighted by the sample population, since humans and crops are concentrated in different areas of the US.
+These results are interesting as we can assume they are weighted by the sample population, since humans and crops are concentrated in different areas of the US. However, the most damaging events can be quite concentrated in location (i.e. Tornadoes).
+
+## Appendix
+
+This analysis was completed with the below system:
+
+```{r session}
+sessionInfo()
+```

@@ -127,4 +127,47 @@ grid.arrange(g5, g6, g7,g8,ncol=2,nrow=2)
 
 ![](NOAAEvents_files/figure-html/ecoplot-1.png) 
 
-Results show that 
+Results show that Floods, Hurricanes & Tornadoes are the top 3 weather events causing property damage, in the billions of dollars. On average though, heavy rain can also deal a lot of economic damage in addition.
+
+The risk for crops is different: Drought dominates the economic damage impact, although floods, and excessive wetness, also cause a lot of damage.
+
+These results are interesting as we can assume they are weighted by the sample population, since humans and crops are concentrated in different areas of the US. However, the most damaging events can be quite concentrated in location (i.e. Tornadoes).
+
+## Appendix
+
+This analysis was completed with the below system:
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.1.3 (2015-03-09)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 7 x64 (build 7601) Service Pack 1
+## 
+## locale:
+## [1] LC_COLLATE=English_United Kingdom.1252 
+## [2] LC_CTYPE=English_United Kingdom.1252   
+## [3] LC_MONETARY=English_United Kingdom.1252
+## [4] LC_NUMERIC=C                           
+## [5] LC_TIME=English_United Kingdom.1252    
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+## [1] gridExtra_0.9.1   ggplot2_1.0.1     dplyr_0.4.2       R.utils_2.1.0    
+## [5] R.oo_1.19.0       R.methodsS3_1.7.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] assertthat_0.1   colorspace_1.2-6 DBI_0.3.1        digest_0.6.8    
+##  [5] evaluate_0.7     formatR_1.2      gtable_0.1.2     htmltools_0.2.6 
+##  [9] knitr_1.10.5     labeling_0.3     lazyeval_0.1.10  magrittr_1.5    
+## [13] MASS_7.3-42      munsell_0.4.2    parallel_3.1.3   plyr_1.8.3      
+## [17] proto_0.3-10     R6_2.1.0         Rcpp_0.11.6      reshape2_1.4.1  
+## [21] rmarkdown_0.7    scales_0.2.5     stringi_0.5-5    stringr_1.0.0   
+## [25] tools_3.1.3      yaml_2.1.13
+```
